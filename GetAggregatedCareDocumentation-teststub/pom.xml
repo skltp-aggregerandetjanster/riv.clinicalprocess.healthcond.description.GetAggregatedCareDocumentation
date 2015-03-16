@@ -191,4 +191,8 @@ DON'T CHANGE THE CONTENT OF THIS COMMENT UNLESS YOU REALLY KNOW WHAT YOU ARE DOI
             </build>
         </profile>
     </profiles>
+
+  <scm>
+    <tag>v1.1.2</tag>
+  </scm>
 </project>
