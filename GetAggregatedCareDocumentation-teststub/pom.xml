@@ -13,17 +13,16 @@ DON'T CHANGE THE CONTENT OF THIS COMMENT UNLESS YOU REALLY KNOW WHAT YOU ARE DOI
     <parent>
 				<groupId>se.skltp.aggregatingservices.riv.clinicalprocess.healthcond.description</groupId>
 				<artifactId>GetAggregatedCareDocumentation-parent</artifactId>
-				<version>1.1.2</version>
+				<version>1.1.3-SNAPSHOT</version>
 		</parent>
 
     <artifactId>GetAggregatedCareDocumentation-teststub</artifactId>
     <packaging>mule</packaging>
     <name>GetAggregatedCareDocumentation-teststub</name>
 
-
     <properties>
         <skltp.agp.version>1.2.3</skltp.agp.version>
-        <GetAggregatedCareDocumentation.version>1.1.2</GetAggregatedCareDocumentation.version>
+        <GetAggregatedCareDocumentation.version>1.1.3-SNAPSHOT</GetAggregatedCareDocumentation.version>
     </properties>
 
 	<dependencies>
