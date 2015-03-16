@@ -7,11 +7,11 @@ import javax.xml.ws.Holder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import se.riv.clinicalprocess.healthcond.description.getcaredocumentationrequest.v2.GetCareDocumentationResponderInterface;
-import se.riv.clinicalprocess.healthcond.description.getcaredocumentationresponder.v2.GetCareDocumentationResponseType;
-import se.riv.clinicalprocess.healthcond.description.getcaredocumentationresponder.v2.GetCareDocumentationType;
-import se.riv.clinicalprocess.healthcond.description.v2.DatePeriodType;
-import se.riv.clinicalprocess.healthcond.description.v2.PersonIdType;
+import riv.clinicalprocess.healthcond.description.getcaredocumentationrequest.v2.GetCareDocumentationResponderInterface;
+import riv.clinicalprocess.healthcond.description.getcaredocumentationresponder.v2.GetCareDocumentationResponseType;
+import riv.clinicalprocess.healthcond.description.getcaredocumentationresponder.v2.GetCareDocumentationType;
+import riv.clinicalprocess.healthcond.description.v2.DatePeriodType;
+import riv.clinicalprocess.healthcond.description.v2.PersonIdType;
 import se.skltp.aggregatingservices.CareDocumentationMuleServer;
 import se.skltp.agp.riv.interoperability.headers.v1.ProcessingStatusType;
 import se.skltp.agp.test.consumer.AbstractTestConsumer;
@@ -31,12 +31,12 @@ public class CareDocumentationTestConsumer extends AbstractTestConsumer<GetCareD
         Holder<ProcessingStatusType> processingStatusHolder = new Holder<ProcessingStatusType>();
         long now = System.currentTimeMillis();
         consumer.callService("logical-adress", personnummer, null, processingStatusHolder, responseHolder);
-        log.info("Returned #care documentation = " + responseHolder.value.getCareDocumentation().size() + " in " + (System.currentTimeMillis() - now) + " ms.");	
+        log.info("Returned #care documentation = " + responseHolder.value.getCareDocumentation().size() + " in " + (System.currentTimeMillis() - now) + " ms.");
     }
 
     public CareDocumentationTestConsumer(String serviceAddress, String senderId, String originalConsumerHsaId) {
         // Setup a web service proxy for communication using HTTPS with Mutual Authentication
-        super(GetCareDocumentationResponderInterface.class, serviceAddress, senderId, originalConsumerHsaId); 
+        super(GetCareDocumentationResponderInterface.class, serviceAddress, senderId, originalConsumerHsaId);
     }
 
     public void callService(String logicalAddress, String id, DatePeriodType datePeriod, Holder<ProcessingStatusType> processingStatusHolder, Holder<GetCareDocumentationResponseType> responseHolder) {
@@ -47,10 +47,10 @@ public class CareDocumentationTestConsumer extends AbstractTestConsumer<GetCareD
         patientId.setId(id);
         request.setPatientId(patientId);
         request.setTimePeriod(datePeriod);
-        
+
         GetCareDocumentationResponseType response = _service.getCareDocumentation(logicalAddress, request);
         responseHolder.value = response;
-        
+
         processingStatusHolder.value = SoapHeaderCxfInterceptor.getLastFoundProcessingStatus();
     }
 }

@@ -10,9 +10,8 @@ DON'T CHANGE THE CONTENT OF THIS COMMENT UNLESS YOU REALLY KNOW WHAT YOU ARE DOI
 
 	<modelVersion>4.0.0</modelVersion>
 
-
     <parent>
-				<groupId>se.skltp.aggregatingservices.clinicalprocess.healthcond.description</groupId>
+				<groupId>se.skltp.aggregatingservices.riv.clinicalprocess.healthcond.description</groupId>
 				<artifactId>GetAggregatedCareDocumentation-parent</artifactId>
 				<version>1.1.2-SNAPSHOT</version>
 		</parent>
@@ -23,20 +22,20 @@ DON'T CHANGE THE CONTENT OF THIS COMMENT UNLESS YOU REALLY KNOW WHAT YOU ARE DOI
 
 
     <properties>
-        <skltp.agp.version>1.2.1</skltp.agp.version>
+        <skltp.agp.version>1.2.3</skltp.agp.version>
         <GetAggregatedCareDocumentation.version>${project.version}</GetAggregatedCareDocumentation.version>
     </properties>
-		
+
 	<dependencies>
 	  <!-- dependencies to the integration component that contains the services to stub -->
 	    <dependency>
-	    	<groupId>se.skltp.aggregatingservices.clinicalprocess.healthcond.description</groupId>
+	    	<groupId>se.skltp.aggregatingservices.riv.clinicalprocess.healthcond.description</groupId>
 	    	<artifactId>GetAggregatedCareDocumentation</artifactId>
 	    	<version>${GetAggregatedCareDocumentation.version}</version>
 	    	<type>test-jar</type>
 	    </dependency>
 	    <dependency>
-	    	<groupId>se.skltp.aggregatingservices.clinicalprocess.healthcond.description</groupId>
+	    	<groupId>se.skltp.aggregatingservices.riv.clinicalprocess.healthcond.description</groupId>
 	    	<artifactId>GetAggregatedCareDocumentation</artifactId>
 	    	<version>${GetAggregatedCareDocumentation.version}</version>
 	    	<classifier>core</classifier>
@@ -176,7 +175,7 @@ DON'T CHANGE THE CONTENT OF THIS COMMENT UNLESS YOU REALLY KNOW WHAT YOU ARE DOI
                                     <goal>java</goal>
                                 </goals>
                                 <configuration>
-                                    <mainClass>se.skl.tp.aggregatingservices.clinicalprocess.healthcond.description.GetAggregatedCareDocumentationTeststubMuleServer</mainClass>
+                                    <mainClass>se.skl.tp.aggregatingservices.riv.clinicalprocess.healthcond.description.GetAggregatedCareDocumentationTeststubMuleServer</mainClass>
                                     <classpathScope>test</classpathScope>
                                 </configuration>
                             </execution>

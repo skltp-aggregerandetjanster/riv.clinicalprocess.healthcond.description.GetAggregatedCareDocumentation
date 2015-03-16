@@ -30,9 +30,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.soitoolkit.commons.mule.util.RecursiveResourceBundle;
 
-import se.riv.clinicalprocess.healthcond.description.getcaredocumentationresponder.v2.GetCareDocumentationResponseType;
-import se.riv.clinicalprocess.healthcond.description.v2.CareDocumentationType;
-import se.riv.clinicalprocess.healthcond.description.v2.DatePeriodType;
+import riv.clinicalprocess.healthcond.description.getcaredocumentationresponder.v2.GetCareDocumentationResponseType;
+import riv.clinicalprocess.healthcond.description.v2.CareDocumentationType;
+import riv.clinicalprocess.healthcond.description.v2.DatePeriodType;
 import se.skltp.agp.riv.interoperability.headers.v1.ProcessingStatusRecordType;
 import se.skltp.agp.riv.interoperability.headers.v1.ProcessingStatusType;
 import se.skltp.agp.test.consumer.AbstractAggregateIntegrationTest;
@@ -53,12 +53,12 @@ public class CareDocumentationIntegrationTest extends AbstractAggregateIntegrati
     private static final String DEFAULT_SERVICE_ADDRESS = getAddress("SERVICE_INBOUND_URL");
 
     protected String getConfigResources() {
-        return 
-                "soitoolkit-mule-jms-connector-activemq-embedded.xml," + 
+        return
+                "soitoolkit-mule-jms-connector-activemq-embedded.xml," +
                 "GetAggregatedCareDocumentation-common.xml," +
-                //			"aggregating-services-common.xml," + 
+                //			"aggregating-services-common.xml," +
                 //			"aggregating-service.xml," +
-                "teststub-services/engagemangsindex-teststub-service.xml," + 
+                "teststub-services/engagemangsindex-teststub-service.xml," +
                 "teststub-services/service-producer-teststub-service.xml";
     }
 
@@ -67,9 +67,9 @@ public class CareDocumentationIntegrationTest extends AbstractAggregateIntegrati
      */
     @Test
     public void test_ok_zero_hits() {
-        doTest(TEST_RR_ID_ZERO_HITS, 0);		
+        doTest(TEST_RR_ID_ZERO_HITS, 0);
     }
-    
+
     /**
 	 * Perform a test that is expected to return an exception due to missing mandatory http headers (sender-id and original-consumer-id)
 	 */
@@ -83,14 +83,14 @@ public class CareDocumentationIntegrationTest extends AbstractAggregateIntegrati
 		}
 
     	try {
-	    	doTest(TEST_RR_ID_ZERO_HITS, SAMPLE_SENDER_ID, null, null, 0);		
+	    	doTest(TEST_RR_ID_ZERO_HITS, SAMPLE_SENDER_ID, null, null, 0);
 	       	fail("This one should fail on missing http header");
 		} catch (SOAPFaultException e) {
 			assertEquals("Mandatory HTTP header x-rivta-original-serviceconsumer-hsaid is missing", e.getMessage());
 		}
 
     	try {
-	       	doTest(TEST_RR_ID_ZERO_HITS, null, null, null, 0);		
+	       	doTest(TEST_RR_ID_ZERO_HITS, null, null, null, 0);
 	       	fail("This one should fail on missing http header");
 		} catch (SOAPFaultException e) {
 			assertEquals("Mandatory HTTP headers x-vp-sender-id and x-rivta-original-serviceconsumer-hsaid are missing", e.getMessage());
@@ -102,9 +102,7 @@ public class CareDocumentationIntegrationTest extends AbstractAggregateIntegrati
      */
     @Test
     public void test_ok_one_hit() {
-
-        List<ProcessingStatusRecordType> statusList = doTest(TEST_RR_ID_ONE_HIT, 1, new ExpectedTestData(TEST_BO_ID_ONE_HIT, TEST_LOGICAL_ADDRESS_1));
-
+        List<ProcessingStatusRecordType> statusList = doTest(TEST_RR_ID_ONE_HIT, 2, new ExpectedTestData(TEST_BO_ID_ONE_HIT, TEST_LOGICAL_ADDRESS_1));
         assertProcessingStatusDataFromSource(statusList.get(0), TEST_LOGICAL_ADDRESS_1);
     }
 
@@ -115,7 +113,7 @@ public class CareDocumentationIntegrationTest extends AbstractAggregateIntegrati
     public void test_ok_many_hits_with_partial_timeout() {
 
         // Setup call and verify the response, expect one booking from source #1, two from source #2 and a timeout from source #3
-        List<ProcessingStatusRecordType> statusList = doTest(TEST_RR_ID_MANY_HITS, 3, 
+        List<ProcessingStatusRecordType> statusList = doTest(TEST_RR_ID_MANY_HITS, 3,
                 new ExpectedTestData(TEST_BO_ID_MANY_HITS_1, TEST_LOGICAL_ADDRESS_1),
                 new ExpectedTestData(TEST_BO_ID_MANY_HITS_2, TEST_LOGICAL_ADDRESS_2),
                 new ExpectedTestData(TEST_BO_ID_MANY_HITS_3, TEST_LOGICAL_ADDRESS_2));
@@ -143,34 +141,34 @@ public class CareDocumentationIntegrationTest extends AbstractAggregateIntegrati
         long   expectedProcessingTime = getTestDb().getProcessingTime(TEST_LOGICAL_ADDRESS_1);
 
         long ts = System.currentTimeMillis();
-        
+
         List<ProcessingStatusRecordType> statusList = doTest(TEST_RR_ID_ONE_HIT, SAMPLE_SENDER_ID,"consumer1", null, 1, new ExpectedTestData(TEST_BO_ID_ONE_HIT, TEST_LOGICAL_ADDRESS_1));
         ts = System.currentTimeMillis() - ts;
         assertProcessingStatusDataFromSource(statusList.get(0), TEST_LOGICAL_ADDRESS_1);
         assertTrue("Expected a long processing time (i.e. a non cached response)", ts > expectedProcessingTime);
-        
+
         ts = System.currentTimeMillis();
         statusList = doTest(TEST_RR_ID_ONE_HIT, SAMPLE_SENDER_ID, "consumer1", null, 1, new ExpectedTestData(TEST_BO_ID_ONE_HIT, TEST_LOGICAL_ADDRESS_1));
         ts = System.currentTimeMillis() - ts;
         assertProcessingStatusDataFromCache(statusList.get(0), TEST_LOGICAL_ADDRESS_1);
         assertTrue("Expected a short processing time (i.e. a cached response)", ts < expectedProcessingTime);
-        
+
         ts = System.currentTimeMillis();
         statusList = doTest(TEST_RR_ID_ONE_HIT, SAMPLE_SENDER_ID, "consumer2", null, 1, new ExpectedTestData(TEST_BO_ID_ONE_HIT, TEST_LOGICAL_ADDRESS_1));
         ts = System.currentTimeMillis() - ts;
         assertProcessingStatusDataFromSource(statusList.get(0), TEST_LOGICAL_ADDRESS_1);
         assertTrue("Expected a long processing time (i.e. a non cached response)", ts > expectedProcessingTime);
     }
-    
+
 
     @Ignore @Test
     public void test_ok_caching_many_hits() {
         long   expectedProcessingTime = getTestDb().getProcessingTime(TEST_LOGICAL_ADDRESS_1);
 
         long ts = System.currentTimeMillis();
-        
-        
-        List<ProcessingStatusRecordType> statusList = doTest(TEST_RR_ID_MANY_HITS, 3, 
+
+
+        List<ProcessingStatusRecordType> statusList = doTest(TEST_RR_ID_MANY_HITS, 3,
                 new ExpectedTestData(TEST_BO_ID_MANY_HITS_1, TEST_LOGICAL_ADDRESS_1),
                 new ExpectedTestData(TEST_BO_ID_MANY_HITS_2, TEST_LOGICAL_ADDRESS_2),
                 new ExpectedTestData(TEST_BO_ID_MANY_HITS_3, TEST_LOGICAL_ADDRESS_2));
@@ -181,9 +179,9 @@ public class CareDocumentationIntegrationTest extends AbstractAggregateIntegrati
         assertProcessingStatusNoDataSynchFailed(statusList.get(2), TEST_LOGICAL_ADDRESS_3, VIRTUALIZATION_PLATFORM, EXPECTED_ERR_TIMEOUT_MSG);
         ts = System.currentTimeMillis() - ts;
         assertTrue("Expected a long processing time (i.e. a non cached response)", ts > expectedProcessingTime);
-        
+
         ts = System.currentTimeMillis();
-        statusList = doTest(TEST_RR_ID_MANY_HITS, 3, 
+        statusList = doTest(TEST_RR_ID_MANY_HITS, 3,
                 new ExpectedTestData(TEST_BO_ID_MANY_HITS_1, TEST_LOGICAL_ADDRESS_1),
                 new ExpectedTestData(TEST_BO_ID_MANY_HITS_2, TEST_LOGICAL_ADDRESS_2),
                 new ExpectedTestData(TEST_BO_ID_MANY_HITS_3, TEST_LOGICAL_ADDRESS_2));
@@ -199,17 +197,17 @@ public class CareDocumentationIntegrationTest extends AbstractAggregateIntegrati
         DatePeriodType datePeriod = new DatePeriodType();
         datePeriod.setStart("20110101");
         datePeriod.setEnd("20130201");
-        
+
         List<ProcessingStatusRecordType> statusList = doTest(TEST_RR_ID_ONE_HIT, SAMPLE_SENDER_ID, "consumer1", datePeriod, 1, new ExpectedTestData(TEST_BO_ID_ONE_HIT, TEST_LOGICAL_ADDRESS_1));
         assertProcessingStatusDataFromSource(statusList.get(0), TEST_LOGICAL_ADDRESS_1);
-        
+
         statusList = doTest(TEST_RR_ID_ONE_HIT, SAMPLE_SENDER_ID, "consumer1", datePeriod, 1, new ExpectedTestData(TEST_BO_ID_ONE_HIT, TEST_LOGICAL_ADDRESS_1));
         assertProcessingStatusDataFromSource(statusList.get(0), TEST_LOGICAL_ADDRESS_1);
     }
 
     /**
      * Helper method for performing a call to the aggregating service and perform some common validations of the result
-     * 
+     *
      * @param registeredResidentId
      * @param expectedProcessingStatusSize
      * @param testData
@@ -218,10 +216,10 @@ public class CareDocumentationIntegrationTest extends AbstractAggregateIntegrati
     private List<ProcessingStatusRecordType> doTest(String registeredResidentId, int expectedProcessingStatusSize, ExpectedTestData... testData) {
         return doTest(registeredResidentId, SAMPLE_SENDER_ID, SAMPLE_ORIGINAL_CONSUMER_HSAID, null, expectedProcessingStatusSize, testData);
     }
-    
+
     /**
      * Helper method for performing a call to the aggregating service and perform some common validations of the result
-     * 
+     *
      * @param registeredResidentId
      * @param senderId
      * @param originalConsumerHsaId
@@ -244,28 +242,28 @@ public class CareDocumentationIntegrationTest extends AbstractAggregateIntegrati
 
         for (int i = 0; i < testData.length; i++) {
             CareDocumentationType responseElement = response.getCareDocumentation().get(i);
-            assertEquals(registeredResidentId, responseElement.getCareDocumentationHeader().getPatientId().getId());		
-            assertEquals(testData[i].getExpectedBusinessObjectId(), responseElement.getCareDocumentationHeader().getDocumentId());		
+            assertEquals(registeredResidentId, responseElement.getCareDocumentationHeader().getPatientId().getId());
+            assertEquals(testData[i].getExpectedBusinessObjectId(), responseElement.getCareDocumentationHeader().getDocumentId());
             assertEquals(testData[i].getExpectedLogicalAddress(), responseElement.getCareDocumentationHeader().getAccountableHealthcareProfessional().getHealthcareProfessionalCareUnitHSAId());
         }
 
         // Verify the size of the processing status and return it for further analysis
  		ProcessingStatusType statusList = processingStatusHolder.value;
  		assertEquals(expectedProcessingStatusSize, statusList.getProcessingStatusList().size());
- 		
+
  	 	// Verify that correct "x-vp-sender-id" http header was passed to the engagement index
  		assertEquals(SKLTP_HSA_ID, EngagemangsindexTestProducerLogger.getLastSenderId());
- 		
+
  	 	// Verify that correct "x-rivta-original-serviceconsumer-hsaid" http header was passed to the engagement index
  		assertEquals(SAMPLE_ORIGINAL_CONSUMER_HSAID, EngagemangsindexTestProducerLogger.getLastOriginalConsumer());
-        
+
         // Verify that correct "x-vp-sender-id" and "x-rivta-original-serviceconsumer-hsaid" http header was passed to the service producer,
  		// given that a service producer was called
  		if (expectedProcessingStatusSize > 0) {
  			assertEquals(SAMPLE_SENDER_ID, TestProducerLogger.getLastSenderId());
  			assertEquals(SAMPLE_ORIGINAL_CONSUMER_HSAID, TestProducerLogger.getLastOriginalConsumer());
- 		}  
-        
+ 		}
+
         return statusList.getProcessingStatusList();
     }
 

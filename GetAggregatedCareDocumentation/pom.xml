@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-      <groupId>se.skltp.aggregatingservices.clinicalprocess.healthcond.description</groupId>
+      <groupId>se.skltp.aggregatingservices.riv.clinicalprocess.healthcond.description</groupId>
       <artifactId>GetAggregatedCareDocumentation-parent</artifactId>
       <version>1.1.2-SNAPSHOT</version>
   </parent>
@@ -17,7 +17,7 @@
   <name>GetAggregatedCareDocumentation</name>
 
   <properties>
-    <skltp.agp.version>1.2.1</skltp.agp.version>
+    <skltp.agp.version>1.2.3</skltp.agp.version>
 
     <!-- Properties for generating code from XML Schemas (JAX-WS) -->
     <schema.path>${basedir}/src/main/resources/schemas/Clinicalprocess_healthcond_description_2.0.0</schema.path>
@@ -30,7 +30,7 @@
       <url>http://www.eviware.com/repository/maven2/</url>
     </pluginRepository>
   </pluginRepositories>
-  
+
   <dependencies>
 
     <dependency>
@@ -140,23 +140,23 @@
                     Note: be careful when changing this - must be in
                     sync for all schemas generations in this namespace!
                     <extraarg>
-                      urn:riv:clinicalprocess:healthcond:description:GetCareDocumentation:2:rivtabp21=se.riv.clinicalprocess.healthcond.description.getcaredocumentationrequest.v2
+                      urn:riv:clinicalprocess:healthcond:description:GetCareDocumentation:2:rivtabp21=riv.clinicalprocess.healthcond.description.getcaredocumentationrequest.v2
                     </extraarg>
                     <extraarg>-p</extraarg>
                     <extraarg>
-                      urn:riv:clinicalprocess:healthcond:description:GetCareDocumentationResponder:2=se.riv.clinicalprocess.healthcond.description.getcaredocumentationresponder.v2
+                      urn:riv:clinicalprocess:healthcond:description:GetCareDocumentationResponder:2=riv.clinicalprocess.healthcond.description.getcaredocumentationresponder.v2
                     </extraarg>
                     <extraarg>-p</extraarg>
                     <extraarg>
-                      urn:riv:clinicalprocess:healthcond:description:2=se.riv.clinicalprocess.healthcond.description.v2
+                      urn:riv:clinicalprocess:healthcond:description:2=riv.clinicalprocess.healthcond.description.v2
                     </extraarg>
                     <extraarg>-p</extraarg>
                     <extraarg>
-                      urn:riv:clinicalprocess:healthcond:description:enums:2=se.riv.clinicalprocess.healthcond.description.enums.v2
+                      urn:riv:clinicalprocess:healthcond:description:enums:2=riv.clinicalprocess.healthcond.description.enums.v2
                     </extraarg>
                     <extraarg>-p</extraarg>
                     <extraarg>
-                      urn:riv:itintegration:registry:1=se.riv.itintegration.registry.v1
+                      urn:riv:itintegration:registry:1=riv.itintegration.registry.v1
                     </extraarg>
                   </extraargs>
                   <wsdl>${schema.path}/interactions/GetCareDocumentationInteraction/GetCareDocumentationInteraction_2.0_RIVTABP21.wsdl</wsdl>

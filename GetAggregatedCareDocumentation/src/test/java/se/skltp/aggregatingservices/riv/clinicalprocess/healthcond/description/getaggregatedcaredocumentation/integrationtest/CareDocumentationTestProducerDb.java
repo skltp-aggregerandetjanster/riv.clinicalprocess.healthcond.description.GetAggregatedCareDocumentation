@@ -3,16 +3,16 @@ package se.skltp.aggregatingservices.riv.clinicalprocess.healthcond.description.
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import se.riv.clinicalprocess.healthcond.description.enums.v2.ClinicalDocumentNoteCodeEnum;
-import se.riv.clinicalprocess.healthcond.description.getcaredocumentationresponder.v2.GetCareDocumentationResponseType;
-import se.riv.clinicalprocess.healthcond.description.v2.CareDocumentationBodyType;
-import se.riv.clinicalprocess.healthcond.description.v2.CareDocumentationType;
-import se.riv.clinicalprocess.healthcond.description.v2.ClinicalDocumentNoteType;
-import se.riv.clinicalprocess.healthcond.description.v2.HealthcareProfessionalType;
-import se.riv.clinicalprocess.healthcond.description.v2.LegalAuthenticatorType;
-import se.riv.clinicalprocess.healthcond.description.v2.OrgUnitType;
-import se.riv.clinicalprocess.healthcond.description.v2.PatientSummaryHeaderType;
-import se.riv.clinicalprocess.healthcond.description.v2.PersonIdType;
+import riv.clinicalprocess.healthcond.description.enums.v2.ClinicalDocumentNoteCodeEnum;
+import riv.clinicalprocess.healthcond.description.getcaredocumentationresponder.v2.GetCareDocumentationResponseType;
+import riv.clinicalprocess.healthcond.description.v2.CareDocumentationBodyType;
+import riv.clinicalprocess.healthcond.description.v2.CareDocumentationType;
+import riv.clinicalprocess.healthcond.description.v2.ClinicalDocumentNoteType;
+import riv.clinicalprocess.healthcond.description.v2.HealthcareProfessionalType;
+import riv.clinicalprocess.healthcond.description.v2.LegalAuthenticatorType;
+import riv.clinicalprocess.healthcond.description.v2.OrgUnitType;
+import riv.clinicalprocess.healthcond.description.v2.PatientSummaryHeaderType;
+import riv.clinicalprocess.healthcond.description.v2.PersonIdType;
 import se.skltp.agp.test.producer.TestProducerDb;
 
 public class CareDocumentationTestProducerDb extends TestProducerDb {
@@ -42,7 +42,7 @@ public class CareDocumentationTestProducerDb extends TestProducerDb {
         PatientSummaryHeaderType header = new PatientSummaryHeaderType();
         PersonIdType patientId = new PersonIdType();
         patientId.setId(registeredResidentId);
-        patientId.setType("1.2.752.129.2.1.3.1"); 
+        patientId.setType("1.2.752.129.2.1.3.1");
         header.setPatientId(patientId);
         header.setApprovedForPatient(true);
         header.setDocumentTime(time);
@@ -57,7 +57,7 @@ public class CareDocumentationTestProducerDb extends TestProducerDb {
         } else {
         	orgUnit.setOrgUnitName("Vårdcentralen Stacken");
         }
-        
+
         header.setAccountableHealthcareProfessional(author);
         header.setSourceSystemHSAid(logicalAddress);
         header.setDocumentId(businessObjectId);

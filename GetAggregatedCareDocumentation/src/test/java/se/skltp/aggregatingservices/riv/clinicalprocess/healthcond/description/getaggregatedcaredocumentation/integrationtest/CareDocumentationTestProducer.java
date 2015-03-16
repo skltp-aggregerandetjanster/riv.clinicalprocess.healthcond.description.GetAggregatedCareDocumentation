@@ -8,9 +8,9 @@ import javax.jws.WebService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import se.riv.clinicalprocess.healthcond.description.getcaredocumentationrequest.v2.GetCareDocumentationResponderInterface;
-import se.riv.clinicalprocess.healthcond.description.getcaredocumentationresponder.v2.GetCareDocumentationResponseType;
-import se.riv.clinicalprocess.healthcond.description.getcaredocumentationresponder.v2.GetCareDocumentationType;
+import riv.clinicalprocess.healthcond.description.getcaredocumentationrequest.v2.GetCareDocumentationResponderInterface;
+import riv.clinicalprocess.healthcond.description.getcaredocumentationresponder.v2.GetCareDocumentationResponseType;
+import riv.clinicalprocess.healthcond.description.getcaredocumentationresponder.v2.GetCareDocumentationType;
 import se.skltp.agp.test.producer.TestProducerDb;
 
 @WebService(serviceName = "GetCareDocumentationResponderService", portName = "GetCareDocumentationResponderPort", targetNamespace = "urn:riv:ehr:patientsummary:GetCareDocumentationResponder:2:rivtabp21", name = "GetCareDocumentationInteraction")

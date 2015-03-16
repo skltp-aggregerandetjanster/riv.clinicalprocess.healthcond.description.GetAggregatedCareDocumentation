@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.soitoolkit.commons.mule.util.ThreadSafeSimpleDateFormat;
 
-import se.riv.clinicalprocess.healthcond.description.getcaredocumentationresponder.v2.GetCareDocumentationType;
+import riv.clinicalprocess.healthcond.description.getcaredocumentationresponder.v2.GetCareDocumentationType;
 import se.skltp.agp.riv.itintegration.engagementindex.findcontentresponder.v1.FindContentResponseType;
 import se.skltp.agp.riv.itintegration.engagementindex.v1.EngagementType;
 import se.skltp.agp.service.api.QueryObject;
@@ -29,11 +29,11 @@ public class RequestListFactoryImpl implements RequestListFactory {
     /**
      * Filtrera svarsposter från i EI (ei-engagement) baserat parametrar i GetCareDocumentation requestet (req).
      * Följande villkor måste vara sanna för att en svarspost från EI skall tas med i svaret:
-     * 
+     *
      * 1. req.timePeriod.start <= ei-engagement.mostRecentContent <= req.timePeriod.end
-     *  
+     *
      * Ett anrop görs per funnet sourceSystem med följande värden i anropet:
-     * 
+     *
      * 1. logicalAddress = sourceSystem (systemadressering)
      * 2. subjectOfCareId = orginal-request.subjectOfCareId
      * 3. careUnitId = orginal-request.careUnitId
@@ -49,7 +49,7 @@ public class RequestListFactoryImpl implements RequestListFactory {
 
         if(originalRequest.getTimePeriod() != null){
             reqFrom = parseTs(originalRequest.getTimePeriod().getStart());
-            reqTo   = parseTs(originalRequest.getTimePeriod().getEnd());	
+            reqTo   = parseTs(originalRequest.getTimePeriod().getEnd());
         }
 
         FindContentResponseType eiResp = (FindContentResponseType)src;
@@ -70,7 +70,7 @@ public class RequestListFactoryImpl implements RequestListFactory {
             }
         }
 
-        // Prepare the result of the transformation as a list of request-payloads, 
+        // Prepare the result of the transformation as a list of request-payloads,
         // one payload for each unique logical-address (e.g. source system since we are using systemaddressing),
         // each payload built up as an object-array according to the JAX-WS signature for the method in the service interface
         List<Object[]> reqList = new ArrayList<Object[]>();
@@ -81,10 +81,10 @@ public class RequestListFactoryImpl implements RequestListFactory {
 
             GetCareDocumentationType request = new GetCareDocumentationType();
             request.setPatientId(originalRequest.getPatientId());
-            
+
             // Don't set by PDL-enhet (logicalAddress)
             if(originalRequest.getCareUnitHSAid() != null && originalRequest.getCareUnitHSAid().size() > 0){
-                request.getCareUnitHSAid().addAll(originalRequest.getCareUnitHSAid()); 
+                request.getCareUnitHSAid().addAll(originalRequest.getCareUnitHSAid());
             }
 
             request.setTimePeriod(originalRequest.getTimePeriod());
@@ -115,7 +115,7 @@ public class RequestListFactoryImpl implements RequestListFactory {
     protected boolean isBetween(Date from, Date to, String tsStr) {
         return true;
     }
-    
+
 /*    protected boolean isBetween(Date from, Date to, String tsStr) {
         try {
             log.debug("Is {} between {} and {}", new Object[]{tsStr, from, to});
