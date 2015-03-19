@@ -26,8 +26,6 @@ import javax.xml.ws.soap.SOAPFaultException;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.soitoolkit.commons.mule.util.RecursiveResourceBundle;
 
 import riv.clinicalprocess.healthcond.description.getcaredocumentationresponder.v2.GetCareDocumentationResponseType;
@@ -41,8 +39,6 @@ import se.skltp.agp.test.producer.EngagemangsindexTestProducerLogger;
 import se.skltp.agp.test.producer.TestProducerLogger;
 
 public class CareDocumentationIntegrationTest extends AbstractAggregateIntegrationTest {
-
-    private static final Logger log = LoggerFactory.getLogger(CareDocumentationIntegrationTest.class);
 
     private static final RecursiveResourceBundle rb = new RecursiveResourceBundle("GetAggregatedCareDocumentation-config");
     private static final String SKLTP_HSA_ID = rb.getString("SKLTP_HSA_ID");
