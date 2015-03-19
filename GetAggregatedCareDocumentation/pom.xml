@@ -7,22 +7,17 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-      <groupId>se.skltp.aggregatingservices.riv.clinicalprocess.healthcond.description</groupId>
-      <artifactId>GetAggregatedCareDocumentation-parent</artifactId>
-      <version>1.1.2</version>
+    <groupId>se.skltp.aggregatingservices.riv.clinicalprocess.healthcond.description</groupId>
+    <artifactId>GetAggregatedCareDocumentation-parent</artifactId>
+    <version>1.1.3</version>
   </parent>
 
   <artifactId>GetAggregatedCareDocumentation</artifactId>
-  <version>1.1.2</version>
   <packaging>mule</packaging>
   <name>GetAggregatedCareDocumentation</name>
 
   <properties>
     <skltp.agp.version>1.2.3</skltp.agp.version>
-
-    <!-- Properties for generating code from XML Schemas (JAX-WS) -->
-    <schema.path>${basedir}/src/main/resources/schemas/Clinicalprocess_healthcond_description_2.0.0</schema.path>
-    <cxf.version>2.5.1</cxf.version>
   </properties>
 
   <pluginRepositories>
@@ -35,32 +30,22 @@
   <dependencies>
 
     <dependency>
+      <groupId>se.skltp.aggregatingservices.riv.clinicalprocess.healthcond.description</groupId>
+      <artifactId>GetAggregatedCareDocumentation-schemas</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>se.skltp.agp</groupId>
       <artifactId>agp-core</artifactId>
       <version>${skltp.agp.version}</version>
     </dependency>
 
-<!--
-        <dependency>
-          <groupId>org.soitoolkit.commons.components</groupId>
-                <artifactId>soitoolkit-studio-components</artifactId>
-                <version>${soitoolkit.version}</version>
-        </dependency>
-
-        TODO: Mule EE dependency
-        <dependency>
-            <groupId>org.soitoolkit.commons.poms.mule-dependencies</groupId>
-            <artifactId>soitoolkit-mule-ee-3.3.1-dependencies</artifactId>
-            <version>${soitoolkit.version}</version>
-            <type>pom</type>
-        </dependency>
- -->
-
     <dependency>
-            <groupId>org.soitoolkit.commons.poms.mule-dependencies</groupId>
-            <artifactId>soitoolkit-mule-3.3.1-dependencies</artifactId>
-            <version>${soitoolkit.version}</version>
-            <type>pom</type>
+      <groupId>org.soitoolkit.commons.poms.mule-dependencies</groupId>
+      <artifactId>soitoolkit-mule-3.3.1-dependencies</artifactId>
+      <version>${soitoolkit.version}</version>
+      <type>pom</type>
     </dependency>
 
     <!-- TEST DEPENDENCIES -->
@@ -102,8 +87,7 @@
         <directory>${basedir}/src/main/resources</directory>
       </resource>
       <resource>
-        <!-- To get mule-config files from the Mule Studio defined resource-folder
-          in the classpath... -->
+        <!-- To get mule-config files from the Mule Studio defined resource-folder in the classpath... -->
         <directory>${basedir}/src/main/app</directory>
       </resource>
     </resources>
@@ -122,60 +106,11 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.apache.cxf</groupId>
-        <artifactId>cxf-codegen-plugin</artifactId>
-        <version>${cxf.version}</version>
-        <executions>
-          <execution>
-            <id>generate-sources</id>
-            <phase>generate-sources</phase>
-            <configuration>
-              <fork>once</fork>
-              <additionalJvmArgs>-Dfile.encoding=UTF-8</additionalJvmArgs>
-              <sourceRoot>${basedir}/target/generated/src/main/java</sourceRoot>
-              <validate>true</validate>
-              <wsdlOptions>
-                <wsdlOption>
-                  <extraargs>
-                    <extraarg>-p</extraarg>
-                    Note: be careful when changing this - must be in
-                    sync for all schemas generations in this namespace!
-                    <extraarg>
-                      urn:riv:clinicalprocess:healthcond:description:GetCareDocumentation:2:rivtabp21=riv.clinicalprocess.healthcond.description.getcaredocumentationrequest.v2
-                    </extraarg>
-                    <extraarg>-p</extraarg>
-                    <extraarg>
-                      urn:riv:clinicalprocess:healthcond:description:GetCareDocumentationResponder:2=riv.clinicalprocess.healthcond.description.getcaredocumentationresponder.v2
-                    </extraarg>
-                    <extraarg>-p</extraarg>
-                    <extraarg>
-                      urn:riv:clinicalprocess:healthcond:description:2=riv.clinicalprocess.healthcond.description.v2
-                    </extraarg>
-                    <extraarg>-p</extraarg>
-                    <extraarg>
-                      urn:riv:clinicalprocess:healthcond:description:enums:2=riv.clinicalprocess.healthcond.description.enums.v2
-                    </extraarg>
-                    <extraarg>-p</extraarg>
-                    <extraarg>
-                      urn:riv:itintegration:registry:1=riv.itintegration.registry.v1
-                    </extraarg>
-                  </extraargs>
-                  <wsdl>${schema.path}/interactions/GetCareDocumentationInteraction/GetCareDocumentationInteraction_2.0_RIVTABP21.wsdl</wsdl>
-                </wsdlOption>
-              </wsdlOptions>
-            </configuration>
-            <goals>
-              <goal>wsdl2java</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.mule.tools</groupId>
         <artifactId>maven-mule-plugin</artifactId>
         <extensions>true</extensions>
-        <!-- Include mule-dependencies that doesn't come with Mule 3.x otherwise
-          we can't install to a vanilla Mule 3.x installation -->
+        <!-- Include mule-dependencies that don't come with Mule 3.x otherwise
+             we can't install to a vanilla Mule 3.x installation -->
         <configuration>
           <inclusions>
             <inclusion>
@@ -189,43 +124,37 @@
           </inclusions>
           <exclusions>
 
-            <!-- xercesImpl is endorsed in MULE_HOME/lib/endorsed, see issue
-              274 -->
+            <!-- xercesImpl is endorsed in MULE_HOME/lib/endorsed, see issue 274 -->
             <exclusion>
               <groupId>xerces</groupId>
               <artifactId>xercesImpl</artifactId>
             </exclusion>
 
-            <!-- log4j is already included in MULE_HOME/lib/boot, see issue
-              283 -->
+            <!-- log4j is already included in MULE_HOME/lib/boot, see issue 283 -->
             <exclusion>
               <groupId>log4j</groupId>
               <artifactId>log4j</artifactId>
             </exclusion>
 
-            <!-- junit is already included in MULE_HOME/lib/opt, see issue
-              283 -->
+            <!-- junit is already included in MULE_HOME/lib/opt, see issue 283 -->
             <exclusion>
               <groupId>junit</groupId>
               <artifactId>junit</artifactId>
             </exclusion>
 
-            <!-- servlet-api-2.5 is already included in MULE_HOME/lib/opt,
-              see issue 283 -->
+            <!-- servlet-api-2.5 is already included in MULE_HOME/lib/opt, see issue 283 -->
             <exclusion>
               <groupId>org.mortbay.jetty</groupId>
               <artifactId>servlet-api-2.5</artifactId>
             </exclusion>
 
-            <!-- jug is already included in MULE_HOME/lib/opt, see issue
-              283 -->
+            <!-- jug is already included in MULE_HOME/lib/opt, see issue 283 -->
             <exclusion>
               <groupId>org.safehaus.jug</groupId>
               <artifactId>jug.osgi</artifactId>
             </exclusion>
 
-            <!-- activemq needs to be added manually to MULE_HOME/lib/user
-              if required, see issue 283 -->
+            <!-- activemq needs to be added manually to MULE_HOME/lib/user if required, see issue 283 -->
             <exclusion>
               <groupId>org.apache.activemq</groupId>
               <artifactId>activemq-core</artifactId>
@@ -235,8 +164,7 @@
               <artifactId>xbean-spring</artifactId>
             </exclusion>
 
-            <!-- hornetq needs to be added manually to MULE_HOME/lib/user
-              if required, see issue 283 -->
+            <!-- hornetq needs to be added manually to MULE_HOME/lib/user if required, see issue 283 -->
             <exclusion>
               <groupId>org.hornetq</groupId>
               <artifactId>hornetq-core-client</artifactId>
@@ -250,8 +178,7 @@
               <artifactId>netty</artifactId>
             </exclusion>
 
-            <!-- jtds (JDBC driver fpr Microsoft SQL Server) needs to be
-              added manually to MULE_HOME/lib/user if required, see issue 283 -->
+            <!-- jtds (JDBC driver fpr Microsoft SQL Server) needs to be added manually to MULE_HOME/lib/user if required, see issue 283 -->
             <exclusion>
               <groupId>net.sourceforge.jtds</groupId>
               <artifactId>jtds</artifactId>
@@ -265,8 +192,8 @@
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
           <!-- if no classifier is declared, then a mvn install results in
-            a file in the local repo: ic2-1.0.0-SNAPSHOT.mule which is a jar-file - only
-            strangely named and with a bad extension -->
+               a file in the local repo: ic2-1.0.0-SNAPSHOT.mule which is a jar-file - only
+               strangely named and with a bad extension -->
           <classifier>core</classifier>
           <excludes>
             <exclude>log4j.xml</exclude>
@@ -313,9 +240,8 @@
   <profiles>
     <profile>
       <id>muleServer</id>
-      <!-- Start mule server with the command "mvn -PmuleServer" or "mvn
-        -PmuleServer -Dexec.args="${artifaceId}-config.xml"" if you want to override
-        the default config-file -->
+      <!-- Start mule server with the command "mvn -PmuleServer" or "mvn -PmuleServer -Dexec.args="${artifaceId}-config.xml""
+           if you want to override the default config-file -->
       <build>
         <defaultGoal>test</defaultGoal>
         <plugins>
@@ -345,28 +271,5 @@
       </build>
     </profile>
 
-    <profile>
-      <id>acceptance-test</id>
-      <build>
-        <defaultGoal>test</defaultGoal>
-        <plugins>
-          <plugin>
-            <groupId>eviware</groupId>
-            <artifactId>maven-soapui-plugin</artifactId>
-            <version>4.5.1</version>
-            <configuration>
-              <projectFile>src/test/resources/GetCareDocumentation-soapui-project.xml</projectFile>
-              <host>${hostname}</host>
-              <outputFolder>target</outputFolder>
-              <settingsFile>${settingsFile}</settingsFile>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
   </profiles>
-
-  <scm>
-    <tag>v1.1.2</tag>
-  </scm>
 </project>
