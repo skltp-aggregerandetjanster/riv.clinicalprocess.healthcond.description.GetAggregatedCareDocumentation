@@ -102,7 +102,7 @@ public class RequestListFactoryImpl implements RequestListFactory {
         }
         log.debug("Is {} between {} and ", new Object[] { mostRecentContentTimestamp, fromRequestDate, toRequestDate });
         try {
-            Date mostRecentContent = requestDateFormat.parse(mostRecentContentTimestamp);
+            Date mostRecentContent = mostRecentContentDateFormat.parse(mostRecentContentTimestamp);
             if (fromRequestDate != null && fromRequestDate.after(mostRecentContent)) {
                 return false;
             }
@@ -120,7 +120,7 @@ public class RequestListFactoryImpl implements RequestListFactory {
             if (dateString == null || dateString.length() == 0) {
                 return null;
             } else {
-                return mostRecentContentDateFormat.parse(dateString);
+                return requestDateFormat.parse(dateString);
             }
         } catch (ParseException e) {
             throw new RuntimeException(e);
