@@ -55,7 +55,7 @@ DON'T CHANGE THE CONTENT OF THIS COMMENT UNLESS YOU REALLY KNOW WHAT YOU ARE DOI
               <sourceRoot>${schema.gen.src.dir}</sourceRoot>
               <wsdlOptions>
                 <wsdlOption>
-                  <wsdl>${schema.path}/clinicalprocess_healthcond_description_2.0.0/interactions/GetCareDocumentationInteraction/GetCareDocumentationInteraction_2.0_RIVTABP21.wsdl</wsdl>
+                  <wsdl>${schema.path}/clinicalprocess_healthcond_description/interactions/GetCareDocumentationInteraction/GetCareDocumentationInteraction_2.1_RIVTABP21.wsdl</wsdl>
                   <extraargs>
                     <extraarg>-validate</extraarg>
                     <extraarg>-p</extraarg>
@@ -64,6 +64,8 @@ DON'T CHANGE THE CONTENT OF THIS COMMENT UNLESS YOU REALLY KNOW WHAT YOU ARE DOI
                     <extraarg>urn:riv:clinicalprocess:healthcond:description:GetCareDocumentationResponder:2=riv.clinicalprocess.healthcond.description.getcaredocumentationresponder.v2</extraarg>
                     <extraarg>-p</extraarg>
                     <extraarg>urn:riv:clinicalprocess:healthcond:description:2=riv.clinicalprocess.healthcond.description.v2</extraarg>
+                    <extraarg>-p</extraarg>
+                    <extraarg>urn:riv:clinicalprocess:healthcond:description:2.1=riv.clinicalprocess.healthcond.description.v2_1</extraarg>
                     <extraarg>-p</extraarg>
                     <extraarg>urn:riv:clinicalprocess:healthcond:description:enums:2=riv.clinicalprocess.healthcond.description.enums.v2</extraarg>
                     <extraarg>-p</extraarg>
