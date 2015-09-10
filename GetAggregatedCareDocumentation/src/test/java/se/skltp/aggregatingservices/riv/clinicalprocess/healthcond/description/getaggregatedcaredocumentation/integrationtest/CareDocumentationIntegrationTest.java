@@ -7,6 +7,7 @@ import static se.skltp.aggregatingservices.CareDocumentationMuleServer.getAddres
 import static se.skltp.agp.riv.interoperability.headers.v1.CausingAgentEnum.VIRTUALIZATION_PLATFORM;
 import static se.skltp.agp.test.consumer.AbstractTestConsumer.SAMPLE_ORIGINAL_CONSUMER_HSAID;
 import static se.skltp.agp.test.consumer.AbstractTestConsumer.SAMPLE_SENDER_ID;
+import static se.skltp.agp.test.consumer.AbstractTestConsumer.SAMPLE_CORRELATION_ID;
 import static se.skltp.agp.test.producer.TestProducerDb.TEST_BO_ID_MANY_HITS_1;
 import static se.skltp.agp.test.producer.TestProducerDb.TEST_BO_ID_MANY_HITS_2;
 import static se.skltp.agp.test.producer.TestProducerDb.TEST_BO_ID_MANY_HITS_3;
@@ -72,24 +73,24 @@ public class CareDocumentationIntegrationTest extends AbstractAggregateIntegrati
     @Test
     public void test_fault_missing_http_headers() {
     	try {
-			doTest(TEST_RR_ID_ZERO_HITS, null, SAMPLE_ORIGINAL_CONSUMER_HSAID, null, 0);
+			doTest(TEST_RR_ID_ZERO_HITS, null, SAMPLE_ORIGINAL_CONSUMER_HSAID, SAMPLE_CORRELATION_ID, null, 0);
 			fail("This one should fail on missing http header");
 		} catch (SOAPFaultException e) {
 			assertEquals("Mandatory HTTP header x-vp-sender-id is missing", e.getMessage());
 		}
 
     	try {
-	    	doTest(TEST_RR_ID_ZERO_HITS, SAMPLE_SENDER_ID, null, null, 0);
+	    	doTest(TEST_RR_ID_ZERO_HITS, SAMPLE_SENDER_ID, null, SAMPLE_CORRELATION_ID, null, 0);
 	       	fail("This one should fail on missing http header");
 		} catch (SOAPFaultException e) {
-			assertEquals("Mandatory HTTP header x-rivta-original-serviceconsumer-hsaid is missing", e.getMessage());
+			assertEquals("\nMandatory HTTP header x-rivta-original-serviceconsumer-hsaid is missing", e.getMessage());
 		}
 
     	try {
-	       	doTest(TEST_RR_ID_ZERO_HITS, null, null, null, 0);
+	       	doTest(TEST_RR_ID_ZERO_HITS, null, null, null, null, 0);
 	       	fail("This one should fail on missing http header");
 		} catch (SOAPFaultException e) {
-			assertEquals("Mandatory HTTP headers x-vp-sender-id and x-rivta-original-serviceconsumer-hsaid are missing", e.getMessage());
+		    assertEquals("Mandatory HTTP header x-vp-sender-id is missing\nMandatory HTTP header x-rivta-original-serviceconsumer-hsaid is missing\nMandatory HTTP header x-skltp-correlation-id is missing", e.getMessage());
 		}
     }
 
@@ -132,32 +133,32 @@ public class CareDocumentationIntegrationTest extends AbstractAggregateIntegrati
         assertProcessingStatusNoDataSynchFailed(statusList.get(0), TEST_LOGICAL_ADDRESS_1, VIRTUALIZATION_PLATFORM, EXPECTED_ERR_INVALID_ID_MSG);
     }
 
-    @Ignore @Test
+    @Ignore @Test // FIXME
     public void test_ok_caching() {
         long   expectedProcessingTime = getTestDb().getProcessingTime(TEST_LOGICAL_ADDRESS_1);
 
         long ts = System.currentTimeMillis();
 
-        List<ProcessingStatusRecordType> statusList = doTest(TEST_RR_ID_ONE_HIT, SAMPLE_SENDER_ID,"consumer1", null, 1, new ExpectedTestData(TEST_BO_ID_ONE_HIT, TEST_LOGICAL_ADDRESS_1));
+        List<ProcessingStatusRecordType> statusList = doTest(TEST_RR_ID_ONE_HIT, SAMPLE_SENDER_ID,"consumer1", SAMPLE_CORRELATION_ID, null, 1, new ExpectedTestData(TEST_BO_ID_ONE_HIT, TEST_LOGICAL_ADDRESS_1));
         ts = System.currentTimeMillis() - ts;
         assertProcessingStatusDataFromSource(statusList.get(0), TEST_LOGICAL_ADDRESS_1);
         assertTrue("Expected a long processing time (i.e. a non cached response)", ts > expectedProcessingTime);
 
         ts = System.currentTimeMillis();
-        statusList = doTest(TEST_RR_ID_ONE_HIT, SAMPLE_SENDER_ID, "consumer1", null, 1, new ExpectedTestData(TEST_BO_ID_ONE_HIT, TEST_LOGICAL_ADDRESS_1));
+        statusList = doTest(TEST_RR_ID_ONE_HIT, SAMPLE_SENDER_ID, "consumer1", SAMPLE_CORRELATION_ID, null, 1, new ExpectedTestData(TEST_BO_ID_ONE_HIT, TEST_LOGICAL_ADDRESS_1));
         ts = System.currentTimeMillis() - ts;
         assertProcessingStatusDataFromCache(statusList.get(0), TEST_LOGICAL_ADDRESS_1);
         assertTrue("Expected a short processing time (i.e. a cached response)", ts < expectedProcessingTime);
 
         ts = System.currentTimeMillis();
-        statusList = doTest(TEST_RR_ID_ONE_HIT, SAMPLE_SENDER_ID, "consumer2", null, 1, new ExpectedTestData(TEST_BO_ID_ONE_HIT, TEST_LOGICAL_ADDRESS_1));
+        statusList = doTest(TEST_RR_ID_ONE_HIT, SAMPLE_SENDER_ID, "consumer2", SAMPLE_CORRELATION_ID, null, 1, new ExpectedTestData(TEST_BO_ID_ONE_HIT, TEST_LOGICAL_ADDRESS_1));
         ts = System.currentTimeMillis() - ts;
         assertProcessingStatusDataFromSource(statusList.get(0), TEST_LOGICAL_ADDRESS_1);
         assertTrue("Expected a long processing time (i.e. a non cached response)", ts > expectedProcessingTime);
     }
 
 
-    @Ignore @Test
+    @Ignore @Test // FIXME
     public void test_ok_caching_many_hits() {
         long   expectedProcessingTime = getTestDb().getProcessingTime(TEST_LOGICAL_ADDRESS_1);
 
@@ -188,16 +189,16 @@ public class CareDocumentationIntegrationTest extends AbstractAggregateIntegrati
         assertTrue("Expected a short processing time (i.e. a cached response)", ts < expectedProcessingTime);
     }
 
-    @Ignore @Test
+    @Ignore @Test // FIXME
     public void test_non_cachable() {
         DatePeriodType datePeriod = new DatePeriodType();
         datePeriod.setStart("20110101");
         datePeriod.setEnd("20130201");
 
-        List<ProcessingStatusRecordType> statusList = doTest(TEST_RR_ID_ONE_HIT, SAMPLE_SENDER_ID, "consumer1", datePeriod, 1, new ExpectedTestData(TEST_BO_ID_ONE_HIT, TEST_LOGICAL_ADDRESS_1));
+        List<ProcessingStatusRecordType> statusList = doTest(TEST_RR_ID_ONE_HIT, SAMPLE_SENDER_ID, "consumer1", SAMPLE_CORRELATION_ID, datePeriod, 1, new ExpectedTestData(TEST_BO_ID_ONE_HIT, TEST_LOGICAL_ADDRESS_1));
         assertProcessingStatusDataFromSource(statusList.get(0), TEST_LOGICAL_ADDRESS_1);
 
-        statusList = doTest(TEST_RR_ID_ONE_HIT, SAMPLE_SENDER_ID, "consumer1", datePeriod, 1, new ExpectedTestData(TEST_BO_ID_ONE_HIT, TEST_LOGICAL_ADDRESS_1));
+        statusList = doTest(TEST_RR_ID_ONE_HIT, SAMPLE_SENDER_ID, "consumer1", SAMPLE_CORRELATION_ID, datePeriod, 1, new ExpectedTestData(TEST_BO_ID_ONE_HIT, TEST_LOGICAL_ADDRESS_1));
         assertProcessingStatusDataFromSource(statusList.get(0), TEST_LOGICAL_ADDRESS_1);
     }
 
@@ -210,7 +211,7 @@ public class CareDocumentationIntegrationTest extends AbstractAggregateIntegrati
      * @return
      */
     private List<ProcessingStatusRecordType> doTest(String registeredResidentId, int expectedProcessingStatusSize, ExpectedTestData... testData) {
-        return doTest(registeredResidentId, SAMPLE_SENDER_ID, SAMPLE_ORIGINAL_CONSUMER_HSAID, null, expectedProcessingStatusSize, testData);
+        return doTest(registeredResidentId, SAMPLE_SENDER_ID, SAMPLE_ORIGINAL_CONSUMER_HSAID, SAMPLE_CORRELATION_ID, null, expectedProcessingStatusSize, testData);
     }
 
     /**
@@ -223,10 +224,10 @@ public class CareDocumentationIntegrationTest extends AbstractAggregateIntegrati
      * @param testData
      * @return
      */
-    private List<ProcessingStatusRecordType> doTest(String registeredResidentId, String senderId, String originalConsumerHsaId, DatePeriodType datePeriod,int expectedProcessingStatusSize, ExpectedTestData... testData) {
+    private List<ProcessingStatusRecordType> doTest(String registeredResidentId, String senderId, String originalConsumerHsaId, String correlationId, DatePeriodType datePeriod,int expectedProcessingStatusSize, ExpectedTestData... testData) {
 
         // Setup and perform the call to the web service
-        CareDocumentationTestConsumer consumer = new CareDocumentationTestConsumer(DEFAULT_SERVICE_ADDRESS, senderId, originalConsumerHsaId);
+        CareDocumentationTestConsumer consumer = new CareDocumentationTestConsumer(DEFAULT_SERVICE_ADDRESS, senderId, originalConsumerHsaId, correlationId);
         Holder<GetCareDocumentationResponseType> responseHolder = new Holder<GetCareDocumentationResponseType>();
         Holder<ProcessingStatusType> processingStatusHolder = new Holder<ProcessingStatusType>();
         consumer.callService(LOGICAL_ADDRESS, registeredResidentId, datePeriod, processingStatusHolder, responseHolder);
@@ -258,6 +259,7 @@ public class CareDocumentationIntegrationTest extends AbstractAggregateIntegrati
  		if (expectedProcessingStatusSize > 0) {
  			assertEquals(SAMPLE_SENDER_ID, TestProducerLogger.getLastSenderId());
  			assertEquals(SAMPLE_ORIGINAL_CONSUMER_HSAID, TestProducerLogger.getLastOriginalConsumer());
+            assertEquals(SAMPLE_CORRELATION_ID, TestProducerLogger.getLastCorrelationId());
  		}
 
         return statusList.getProcessingStatusList();
