@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import riv.clinicalprocess.healthcond.description.enums.v2.ClinicalDocumentNoteCodeEnum;
 import riv.clinicalprocess.healthcond.description.getcaredocumentationresponder.v2.GetCareDocumentationResponseType;
+import riv.clinicalprocess.healthcond.description.v2.CPatientSummaryHeaderType;
 import riv.clinicalprocess.healthcond.description.v2.CareDocumentationBodyType;
 import riv.clinicalprocess.healthcond.description.v2.CareDocumentationType;
 import riv.clinicalprocess.healthcond.description.v2.ClinicalDocumentNoteType;
@@ -39,7 +40,7 @@ public class CareDocumentationTestProducerDb extends TestProducerDb {
                 new Object[] {logicalAddress, registeredResidentId, businessObjectId});
 
         CareDocumentationType response = new CareDocumentationType();
-        PatientSummaryHeaderType header = new PatientSummaryHeaderType();
+        CPatientSummaryHeaderType header = new CPatientSummaryHeaderType();
         PersonIdType patientId = new PersonIdType();
         patientId.setId(registeredResidentId);
         patientId.setType("1.2.752.129.2.1.3.1");

@@ -21,14 +21,17 @@
 	xmlns:tns="urn:riv:clinicalprocess:healthcond:description:GetCareDocumentationResponder:2"
 	xmlns:core="urn:riv:clinicalprocess:healthcond:description:2"
 	xmlns:codes="urn:riv:clinicalprocess:healthcond:description:enums:2"
+	xmlns:m1="urn:riv:clinicalprocess:healthcond:description:2.1"
 	targetNamespace="urn:riv:clinicalprocess:healthcond:description:GetCareDocumentationResponder:2"
-	elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.1">
 
-	<xs:import schemaLocation="../../core_components/clinicalprocess_healthcond_description_2.0.xsd"
+	<xs:import schemaLocation="../../core_components/clinicalprocess_healthcond_description_2.1.xsd"
 		namespace="urn:riv:clinicalprocess:healthcond:description:2"/>
 	<xs:import
-		schemaLocation="../../core_components/clinicalprocess_healthcond_description_enum_2.0.xsd"
+		schemaLocation="../../core_components/clinicalprocess_healthcond_description_enum_2.1.xsd"
 		namespace="urn:riv:clinicalprocess:healthcond:description:enums:2"/>
+	<xs:import namespace="urn:riv:clinicalprocess:healthcond:description:2.1"
+		schemaLocation="../../core_components/clinicalprocess_healthcond_description_2.1_ext.xsd"/> 
 
 	<xs:element name="GetCareDocumentation" type="tns:GetCareDocumentationType"/>
 	<xs:element name="GetCareDocumentationResponse" type="tns:GetCareDocumentationResponseType"/>
@@ -55,10 +58,7 @@
 		<xs:sequence>
 			<xs:element name="careDocumentation" type="core:CareDocumentationType" minOccurs="0"
 				maxOccurs="unbounded"/>
-			<xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="m1:result" minOccurs="0"/> 
 		</xs:sequence>
 	</xs:complexType>
-
-
-
 </xs:schema>
