@@ -26,6 +26,7 @@ import java.util.List;
 import javax.xml.ws.Holder;
 import javax.xml.ws.soap.SOAPFaultException;
 
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.soitoolkit.commons.mule.util.RecursiveResourceBundle;
@@ -33,6 +34,7 @@ import org.soitoolkit.commons.mule.util.RecursiveResourceBundle;
 import riv.clinicalprocess.healthcond.description.getcaredocumentationresponder.v2.GetCareDocumentationResponseType;
 import riv.clinicalprocess.healthcond.description.v2.CareDocumentationType;
 import riv.clinicalprocess.healthcond.description.v2.DatePeriodType;
+import se.skltp.agp.cache.TakCacheBean;
 import se.skltp.agp.riv.interoperability.headers.v1.ProcessingStatusRecordType;
 import se.skltp.agp.riv.interoperability.headers.v1.ProcessingStatusType;
 import se.skltp.agp.test.consumer.AbstractAggregateIntegrationTest;
@@ -61,6 +63,13 @@ public class CareDocumentationIntegrationTest extends AbstractAggregateIntegrati
                 "teststub-non-default-services/tak-teststub-service.xml";
     }
 
+    @Before
+    public void loadTakCache() throws Exception {
+        CareDocumentationTestConsumer consumer = new CareDocumentationTestConsumer(DEFAULT_SERVICE_ADDRESS, "", "", "");
+        final TakCacheBean takCache = (TakCacheBean) muleContext.getRegistry().lookupObject("takCacheBean");
+        takCache.updateCache();
+    }
+    
     /**
      * Perform a test that is expected to return zero hits
      */
