@@ -5,9 +5,9 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static se.skltp.aggregatingservices.CareDocumentationMuleServer.getAddress;
 import static se.skltp.agp.riv.interoperability.headers.v1.CausingAgentEnum.VIRTUALIZATION_PLATFORM;
+import static se.skltp.agp.test.consumer.AbstractTestConsumer.SAMPLE_CORRELATION_ID;
 import static se.skltp.agp.test.consumer.AbstractTestConsumer.SAMPLE_ORIGINAL_CONSUMER_HSAID;
 import static se.skltp.agp.test.consumer.AbstractTestConsumer.SAMPLE_SENDER_ID;
-import static se.skltp.agp.test.consumer.AbstractTestConsumer.SAMPLE_CORRELATION_ID;
 import static se.skltp.agp.test.producer.TestProducerDb.TEST_BO_ID_MANY_HITS_1;
 import static se.skltp.agp.test.producer.TestProducerDb.TEST_BO_ID_MANY_HITS_2;
 import static se.skltp.agp.test.producer.TestProducerDb.TEST_BO_ID_MANY_HITS_3;
@@ -15,6 +15,7 @@ import static se.skltp.agp.test.producer.TestProducerDb.TEST_BO_ID_ONE_HIT;
 import static se.skltp.agp.test.producer.TestProducerDb.TEST_LOGICAL_ADDRESS_1;
 import static se.skltp.agp.test.producer.TestProducerDb.TEST_LOGICAL_ADDRESS_2;
 import static se.skltp.agp.test.producer.TestProducerDb.TEST_LOGICAL_ADDRESS_3;
+import static se.skltp.agp.test.producer.TestProducerDb.TEST_RR_ID_EJ_SAMVERKAN_I_TAK;
 import static se.skltp.agp.test.producer.TestProducerDb.TEST_RR_ID_FAULT_INVALID_ID;
 import static se.skltp.agp.test.producer.TestProducerDb.TEST_RR_ID_MANY_HITS;
 import static se.skltp.agp.test.producer.TestProducerDb.TEST_RR_ID_ONE_HIT;
@@ -25,6 +26,7 @@ import java.util.List;
 import javax.xml.ws.Holder;
 import javax.xml.ws.soap.SOAPFaultException;
 
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.soitoolkit.commons.mule.util.RecursiveResourceBundle;
@@ -32,6 +34,7 @@ import org.soitoolkit.commons.mule.util.RecursiveResourceBundle;
 import riv.clinicalprocess.healthcond.description.getcaredocumentationresponder.v2.GetCareDocumentationResponseType;
 import riv.clinicalprocess.healthcond.description.v2.CareDocumentationType;
 import riv.clinicalprocess.healthcond.description.v2.DatePeriodType;
+import se.skltp.agp.cache.TakCacheBean;
 import se.skltp.agp.riv.interoperability.headers.v1.ProcessingStatusRecordType;
 import se.skltp.agp.riv.interoperability.headers.v1.ProcessingStatusType;
 import se.skltp.agp.test.consumer.AbstractAggregateIntegrationTest;
@@ -56,15 +59,32 @@ public class CareDocumentationIntegrationTest extends AbstractAggregateIntegrati
                 //			"aggregating-services-common.xml," +
                 //			"aggregating-service.xml," +
                 "teststub-services/engagemangsindex-teststub-service.xml," +
-                "teststub-services/service-producer-teststub-service.xml";
+                "teststub-services/service-producer-teststub-service.xml," +
+                "teststub-non-default-services/tak-teststub-service.xml";
     }
 
+    @Before
+    public void loadTakCache() throws Exception {
+        CareDocumentationTestConsumer consumer = new CareDocumentationTestConsumer(DEFAULT_SERVICE_ADDRESS, "", "", "");
+        final TakCacheBean takCache = (TakCacheBean) muleContext.getRegistry().lookupObject("takCacheBean");
+        takCache.updateCache();
+    }
+    
     /**
      * Perform a test that is expected to return zero hits
      */
     @Test
     public void test_ok_zero_hits() {
         doTest(TEST_RR_ID_ZERO_HITS, 0);
+    }
+    
+    /**
+     * Perform a test that is expected to return zero hits even for those who 
+     * do not have permission to access. 
+     */
+    @Test
+    public void test_no_authorization_zero_hits_no_vp007_error() {
+        doTest(TEST_RR_ID_EJ_SAMVERKAN_I_TAK, 0);
     }
 
     /**
