@@ -59,6 +59,7 @@ public class CareDocumentationTestProducerDb extends TestProducerDb {
         	orgUnit.setOrgUnitName("Vårdcentralen Stacken");
         }
 
+        author.setHealthcareProfessionalOrgUnit(orgUnit);
         header.setAccountableHealthcareProfessional(author);
         header.setSourceSystemHSAid(logicalAddress);
         header.setDocumentId(businessObjectId);
