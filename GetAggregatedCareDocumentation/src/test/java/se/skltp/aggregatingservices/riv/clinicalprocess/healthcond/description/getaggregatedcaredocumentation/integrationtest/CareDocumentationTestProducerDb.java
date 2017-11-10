@@ -49,7 +49,8 @@ public class CareDocumentationTestProducerDb extends TestProducerDb {
         header.setDocumentTime(time);
         HealthcareProfessionalType author = new HealthcareProfessionalType();
         author.setHealthcareProfessionalCareUnitHSAId(logicalAddress);
-
+        author.setHealthcareProfessionalCareGiverHSAId(logicalAddress + "-000001");
+        
         OrgUnitType orgUnit = new OrgUnitType();
         if(TestProducerDb.TEST_LOGICAL_ADDRESS_1.equals(logicalAddress)){
         	orgUnit.setOrgUnitName("Vårdcentralen Kusten, Kärna");
