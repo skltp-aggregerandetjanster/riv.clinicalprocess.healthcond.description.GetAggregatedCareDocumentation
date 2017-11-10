@@ -53,12 +53,16 @@ public class CareDocumentationTestProducerDb extends TestProducerDb {
         OrgUnitType orgUnit = new OrgUnitType();
         if(TestProducerDb.TEST_LOGICAL_ADDRESS_1.equals(logicalAddress)){
         	orgUnit.setOrgUnitName("Vårdcentralen Kusten, Kärna");
+            orgUnit.setOrgUnitHSAId(logicalAddress + "-123456");
         } else if(TestProducerDb.TEST_LOGICAL_ADDRESS_2.equals(logicalAddress)){
         	orgUnit.setOrgUnitName("Vårdcentralen Molnet");
+            orgUnit.setOrgUnitHSAId(logicalAddress + "-123457");
         } else {
         	orgUnit.setOrgUnitName("Vårdcentralen Stacken");
+            orgUnit.setOrgUnitHSAId(logicalAddress + "-123458");
         }
 
+        
         author.setHealthcareProfessionalOrgUnit(orgUnit);
         header.setAccountableHealthcareProfessional(author);
         header.setSourceSystemHSAid(logicalAddress);
