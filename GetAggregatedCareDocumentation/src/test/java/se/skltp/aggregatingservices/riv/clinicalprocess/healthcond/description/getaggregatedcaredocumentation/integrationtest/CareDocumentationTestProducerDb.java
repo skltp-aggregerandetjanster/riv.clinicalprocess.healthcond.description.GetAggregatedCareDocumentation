@@ -1,5 +1,7 @@
 package se.skltp.aggregatingservices.riv.clinicalprocess.healthcond.description.getaggregatedcaredocumentation.integrationtest;
 
+import java.util.Random;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,13 +14,13 @@ import riv.clinicalprocess.healthcond.description.v2.ClinicalDocumentNoteType;
 import riv.clinicalprocess.healthcond.description.v2.HealthcareProfessionalType;
 import riv.clinicalprocess.healthcond.description.v2.LegalAuthenticatorType;
 import riv.clinicalprocess.healthcond.description.v2.OrgUnitType;
-import riv.clinicalprocess.healthcond.description.v2.PatientSummaryHeaderType;
 import riv.clinicalprocess.healthcond.description.v2.PersonIdType;
 import se.skltp.agp.test.producer.TestProducerDb;
 
 public class CareDocumentationTestProducerDb extends TestProducerDb {
 
     private static final Logger log = LoggerFactory.getLogger(CareDocumentationTestProducerDb.class);
+    private static Random rand = new Random(); 
 
     @Override
     public Object createResponse(Object... responseItems) {
@@ -48,28 +50,30 @@ public class CareDocumentationTestProducerDb extends TestProducerDb {
         header.setApprovedForPatient(true);
         header.setDocumentTime(time);
         HealthcareProfessionalType author = new HealthcareProfessionalType();
-        author.setHealthcareProfessionalCareUnitHSAId(logicalAddress);
-        author.setHealthcareProfessionalCareGiverHSAId(logicalAddress + "-000001");
+        author.setHealthcareProfessionalCareUnitHSAId(logicalAddress + "-0002" + rand.nextInt(20));
+        author.setHealthcareProfessionalCareGiverHSAId(logicalAddress + "-0001" + rand.nextInt(20));
         
         OrgUnitType orgUnit = new OrgUnitType();
         if(TestProducerDb.TEST_LOGICAL_ADDRESS_1.equals(logicalAddress)){
         	orgUnit.setOrgUnitName("Vårdcentralen Kusten, Kärna");
-            orgUnit.setOrgUnitHSAId(logicalAddress + "-123456");
+            orgUnit.setOrgUnitHSAId(logicalAddress + "-12345" + rand.nextInt(20));
         } else if(TestProducerDb.TEST_LOGICAL_ADDRESS_2.equals(logicalAddress)){
         	orgUnit.setOrgUnitName("Vårdcentralen Molnet");
-            orgUnit.setOrgUnitHSAId(logicalAddress + "-123457");
+            orgUnit.setOrgUnitHSAId(logicalAddress + "-12347" + rand.nextInt(20));
         } else {
         	orgUnit.setOrgUnitName("Vårdcentralen Stacken");
-            orgUnit.setOrgUnitHSAId(logicalAddress + "-123458");
+            orgUnit.setOrgUnitHSAId(logicalAddress + "-1238"  + rand.nextInt(20));
         }
 
         
         author.setHealthcareProfessionalOrgUnit(orgUnit);
         header.setAccountableHealthcareProfessional(author);
-        header.setSourceSystemHSAid(logicalAddress);
+        header.setSourceSystemHSAid(logicalAddress + "-"  + rand.nextInt(20));
         header.setDocumentId(businessObjectId);
         LegalAuthenticatorType legalAuthenticator = new LegalAuthenticatorType();
         legalAuthenticator.setSignatureTime("20130707070707");
+        legalAuthenticator.setLegalAuthenticatorHSAId(logicalAddress + "2222" + rand.nextInt(20));
+        legalAuthenticator.setLegalAuthenticatorName("L. Egal");
         header.setLegalAuthenticator(legalAuthenticator);
         response.setCareDocumentationHeader(header);
 
