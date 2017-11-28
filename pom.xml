@@ -27,12 +27,12 @@ DON'T CHANGE THE CONTENT OF THIS COMMENT UNLESS YOU REALLY KNOW WHAT YOU ARE DOI
       <skltp.agp.version>2.3.3-RC2</skltp.agp.version>
     </properties>
 
-		<scm>
-			<url>http://github.com/skltp-aggregerandetjanster/riv.clinicalprocess.healthcond.description.GetAggregatedCareDocumentation</url>
-			<connection>scm:git:git://github.com/skltp-aggregerandetjanster/riv.clinicalprocess.healthcond.description.GetAggregatedCareDocumentation.git</connection>
-			<developerConnection>scm:git:git://github.com/skltp-aggregerandetjanster/riv.clinicalprocess.healthcond.description.GetAggregatedCareDocumentation.git</developerConnection>
-			<tag>HEAD</tag>
-		</scm>
+	<scm>
+		<url>http://github.com/skltp-aggregerandetjanster/riv.clinicalprocess.healthcond.description.GetAggregatedCareDocumentation</url>
+		<connection>scm:git:git://github.com/skltp-aggregerandetjanster/riv.clinicalprocess.healthcond.description.GetAggregatedCareDocumentation.git</connection>
+		<developerConnection>scm:git:git://github.com/skltp-aggregerandetjanster/riv.clinicalprocess.healthcond.description.GetAggregatedCareDocumentation.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
 
     <modules>
       <module>GetAggregatedCareDocumentation</module>
