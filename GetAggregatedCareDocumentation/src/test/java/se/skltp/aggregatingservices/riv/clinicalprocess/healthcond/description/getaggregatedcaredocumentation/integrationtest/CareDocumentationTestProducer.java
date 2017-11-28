@@ -51,6 +51,7 @@ public class CareDocumentationTestProducer implements GetCareDocumentationRespon
             @WebParam(partName = "parameters", name = "GetCareDocumentation", targetNamespace = "urn:riv:ehr:patientsummary:GetCareDocumentationResponder:2") GetCareDocumentationType request) {
         log.info("### Virtual service for GetCareDocumentation call the source system with logical address: {} and patientId: {}", logicalAddress, request.getPatientId().getId());
 
+        testDb.refreshDb();
         GetCareDocumentationResponseType response = (GetCareDocumentationResponseType)testDb.processRequest(logicalAddress, request.getPatientId().getId());
         if (response == null) {
             // Return an empty response object instead of null if nothing is found
