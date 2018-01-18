@@ -1,4 +1,25 @@
+/**
+ * Copyright (c) 2014 Inera AB, <http://inera.se/>
+ *
+ * This file is part of SKLTP.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 package se.skltp.aggregatingservices.riv.clinicalprocess.healthcond.description.getaggregatedcaredocumentation.integrationtest;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +33,6 @@ import riv.clinicalprocess.healthcond.description.v2.ClinicalDocumentNoteType;
 import riv.clinicalprocess.healthcond.description.v2.HealthcareProfessionalType;
 import riv.clinicalprocess.healthcond.description.v2.LegalAuthenticatorType;
 import riv.clinicalprocess.healthcond.description.v2.OrgUnitType;
-import riv.clinicalprocess.healthcond.description.v2.PatientSummaryHeaderType;
 import riv.clinicalprocess.healthcond.description.v2.PersonIdType;
 import se.skltp.agp.test.producer.TestProducerDb;
 
@@ -35,7 +55,7 @@ public class CareDocumentationTestProducerDb extends TestProducerDb {
 
     @Override
     public Object createResponseItem(String logicalAddress, String registeredResidentId, String businessObjectId, String time) {
-
+    	
         log.debug("Created one response item for logical-address {}, registeredResidentId {} and businessObjectId {}",
                 new Object[] {logicalAddress, registeredResidentId, businessObjectId});
 
@@ -48,22 +68,30 @@ public class CareDocumentationTestProducerDb extends TestProducerDb {
         header.setApprovedForPatient(true);
         header.setDocumentTime(time);
         HealthcareProfessionalType author = new HealthcareProfessionalType();
-        author.setHealthcareProfessionalCareUnitHSAId(logicalAddress);
-
+        author.setHealthcareProfessionalCareUnitHSAId(logicalAddress + "-0002" + ThreadLocalRandom.current().nextInt(1, 20));
+        author.setHealthcareProfessionalCareGiverHSAId(logicalAddress + "-0001" + ThreadLocalRandom.current().nextInt(20));
+        
         OrgUnitType orgUnit = new OrgUnitType();
         if(TestProducerDb.TEST_LOGICAL_ADDRESS_1.equals(logicalAddress)){
         	orgUnit.setOrgUnitName("Vårdcentralen Kusten, Kärna");
+            orgUnit.setOrgUnitHSAId(logicalAddress + "-12345" + ThreadLocalRandom.current().nextInt(20));
         } else if(TestProducerDb.TEST_LOGICAL_ADDRESS_2.equals(logicalAddress)){
         	orgUnit.setOrgUnitName("Vårdcentralen Molnet");
+            orgUnit.setOrgUnitHSAId(logicalAddress + "-12347" + ThreadLocalRandom.current().nextInt(20));
         } else {
         	orgUnit.setOrgUnitName("Vårdcentralen Stacken");
+            orgUnit.setOrgUnitHSAId(logicalAddress + "-1238"  + ThreadLocalRandom.current().nextInt(20));
         }
 
+        
+        author.setHealthcareProfessionalOrgUnit(orgUnit);
         header.setAccountableHealthcareProfessional(author);
-        header.setSourceSystemHSAid(logicalAddress);
+        header.setSourceSystemHSAid(logicalAddress + "-"  + ThreadLocalRandom.current().nextInt(20));
         header.setDocumentId(businessObjectId);
         LegalAuthenticatorType legalAuthenticator = new LegalAuthenticatorType();
         legalAuthenticator.setSignatureTime("20130707070707");
+        legalAuthenticator.setLegalAuthenticatorHSAId(logicalAddress + "2222" + ThreadLocalRandom.current().nextInt(20));
+        legalAuthenticator.setLegalAuthenticatorName("L. Egal");
         header.setLegalAuthenticator(legalAuthenticator);
         response.setCareDocumentationHeader(header);
 
