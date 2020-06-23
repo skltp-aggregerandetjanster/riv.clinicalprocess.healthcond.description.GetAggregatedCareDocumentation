@@ -10,7 +10,7 @@ import se.skltp.aggregatingservices.config.TestProducerConfiguration;
 
 @Configuration
 @EnableConfigurationProperties
-@ConfigurationProperties(prefix="getaggregatedcaredocumentation.v1.teststub")
+@ConfigurationProperties(prefix="getaggregatedcaredocumentation.v2.teststub")
 public class ServiceConfiguration extends TestProducerConfiguration {
 
   public static final String SCHEMA_PATH = "classpath:/schemas/clinicalprocess_healthcond_description/interactions/GetCareDocumentationInteraction/GetCareDocumentationInteraction_2.1_RIVTABP21.wsdl";
