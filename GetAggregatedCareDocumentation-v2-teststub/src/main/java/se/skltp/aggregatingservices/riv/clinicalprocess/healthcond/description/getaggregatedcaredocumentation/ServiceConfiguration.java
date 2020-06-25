@@ -16,9 +16,9 @@ public class ServiceConfiguration extends TestProducerConfiguration {
   public static final String SCHEMA_PATH = "classpath:/schemas/clinicalprocess_healthcond_description/interactions/GetCareDocumentationInteraction/GetCareDocumentationInteraction_2.1_RIVTABP21.wsdl";
 
   public ServiceConfiguration() {
-    setProducerAddress("http://localhost:9101/GetAggregatedCareDocumentation/service/teststub/v1");
+    setProducerAddress("http://localhost:8083/vp");
     setServiceClass(GetCareDocumentationResponderInterface.class.getName());
-    setServiceNamespace("urn:riv:clinicalprocess:healthcond:description:GetCareDocumentation:2:rivtabp21");
+    setServiceNamespace("urn:riv:clinicalprocess:healthcond:description:GetCareDocumentationResponder:2");
     setPortName(GetCareDocumentationResponderService.GetCareDocumentationResponderPort.toString());
     setWsdlPath(SCHEMA_PATH);
     setTestDataGeneratorClass(ServiceTestDataGenerator.class.getName());
