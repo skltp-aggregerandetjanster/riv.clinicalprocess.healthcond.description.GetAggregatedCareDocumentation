@@ -27,7 +27,7 @@ public static final String SCHEMA_PATH = "classpath:/schemas/clinicalprocess_hea
 
     // Set outbound defaults
     setOutboundServiceWsdl(SCHEMA_PATH);
-    setOutboundServiceClass(GetCareDocumentationResponderService.class.getName());
+    setOutboundServiceClass(GetCareDocumentationResponderInterface.class.getName());
     setOutboundPortName(GetCareDocumentationResponderService.GetCareDocumentationResponderPort.toString());
 
     // FindContent
