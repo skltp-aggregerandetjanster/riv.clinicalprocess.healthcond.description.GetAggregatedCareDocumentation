@@ -11,7 +11,7 @@
 
   <groupId>se.skltp.aggregatingservices.riv.clinicalprocess.healthcond.description</groupId>
 	<artifactId>GetAggregatedCareDocumentation-v3</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0-RC1</version>
   <packaging>pom</packaging>
   <name>GetAggregatedCareDocumentation-v3</name>
 
@@ -54,7 +54,7 @@
     <url>http://github.com/skltp-aggregerandetjanster/riv.clinicalprocess.healthcond.description.GetAggregatedCareDocumentation</url>
     <connection>scm:git:https://github.com:443/skltp-aggregerandetjanster/riv.clinicalprocess.healthcond.description.GetAggregatedCareDocumentation.git</connection>
     <developerConnection>scm:git:https://github.com:443/skltp-aggregerandetjanster/riv.clinicalprocess.healthcond.description.GetAggregatedCareDocumentation.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>v1.0.0-RC1</tag>
   </scm>
 
   <modules>  <module>GetAggregatedCareDocumentation-v3-schemas</module>
